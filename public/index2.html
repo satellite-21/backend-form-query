@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <input type="text" id="input"/>
+        <button id="get">GET</button>
+        <button id="post">POST</button>
+
+    </form>
+
+    <script>
+        const getBtnId = document.getElementById('get')
+        const postBtnId = document.getElementById('post')
+        const input = document.getElementById('input')
+
+
+
+        getBtnId.addEventListener('click', getInfo)
+        postBtnId.addEventListener('click', postInfo)
+
+        //this getInfo will send the message from backend to the frontend when the request GET is made from the frontend to the server 
+        async function getInfo(e){
+            e.preventDefault()
+            const res = await fetch('/info',
+            {
+                method:"GET"    
+            })
+            console.log(res)
+            const data = await res.json() //what does this do
+            input.value = data.info //this will send the data from the backend to the front end 
+        }
+
+        async function postInfo(e){
+            e.preventDefault()
+            if(input.value === ''){return}
+            const res = await fetch('/users',
+            {
+                method:"POST", 
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    parcel: input.value
+                })
+
+            })     
+        }
+
+    </script>
+
+</body>
+</html>
